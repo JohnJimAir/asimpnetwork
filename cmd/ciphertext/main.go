@@ -317,7 +317,7 @@ func main() {
 	re := PrintValuesMany(params, out_blo_trick, encoder, decryptor)
 	re = Transpose(re)
 	for i:=0;i<140;i++ {
-		fmt.Printf("%.8f, %.8f", re[i][0], re[i][1])
+		fmt.Printf("%.8f,%.8f", re[i][0], re[i][1])
 		fmt.Println()
 	}
 

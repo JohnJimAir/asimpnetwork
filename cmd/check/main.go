@@ -208,7 +208,7 @@ func PrintPrecision(input []float64) {
 	for i:=0;i<len(input);i++ {
 		fmt.Printf("%.8f", input[i])
 		if i != len(input)-1 {
-			fmt.Printf(", ")
+			fmt.Printf(",")
 		}
 	}
 	fmt.Println()
