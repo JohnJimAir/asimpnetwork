@@ -24,7 +24,7 @@ func (bl *Block) Initialize(num_node int, coefficients_mult [][]float64, coeffic
 	}
 }
 
-func (bl Block) Forward(intervals []float64, degrees []int, eval *hefloat.Evaluator, params hefloat.Parameters) (output []*rlwe.Ciphertext) {
+func (bl Block) Forward(intervals [][]float64, degrees []int, eval *hefloat.Evaluator, params hefloat.Parameters) (output []*rlwe.Ciphertext) {
 
 	output = make([]*rlwe.Ciphertext, bl.Num_node)
 	for i:=0;i<bl.Num_node;i++ {

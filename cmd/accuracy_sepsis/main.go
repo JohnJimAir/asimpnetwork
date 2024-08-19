@@ -8,22 +8,30 @@ import (
 )
 
 func main() {
-	label_true, _ := ReadCSVToFloat64Slice_lastcolumn("../../data/test_data_breast-cancer.csv")
+	label_true, _ := ReadCSVToFloat64Slice_lastcolumn("../../data/test_data_sepsis.csv")
 	label_true = Transpose(label_true)
 	// fmt.Println(label_true)
 
-	result_plain, _ := ReadCSVToFloat64Slice("../../result/KAN_plaintext.csv")
+	result_plain, _ := ReadCSVToFloat64Slice("../../result/sepsis_KAN_plain.csv")
 	result_plain = Transpose(result_plain)
-
-	result_cipher, _ := ReadCSVToFloat64Slice("../../result/KAN_ciphertext.csv")
+    result_cipher, _ := ReadCSVToFloat64Slice("../../result/sepsis_KAN_cipher.csv")
 	result_cipher = Transpose(result_cipher)
 
-	
-	label_plain := Compare(result_plain[0], result_plain[1])
-	label_cipher := Compare(result_cipher[0], result_cipher[1])
+    label_plain := make([]float64, len(result_plain[0]))
+    for i:=0;i<len(result_plain[0]);i++ {
+        if result_plain[0][i] > 0.5 {
+            label_plain[i] = 1.0
+        }
+    }
+    label_cipher := make([]float64, len(result_cipher[0]))
+    for i:=0;i<len(result_cipher[0]);i++ {
+        if result_cipher[0][i] > 0.5 {
+            label_cipher[i] = 1.0
+        }
+    }
 
 	accuracy_plain := CountAccuracy(label_plain, label_true[0])
-	accuracy_cipher := CountAccuracy(label_cipher, label_true[0])
+    accuracy_cipher := CountAccuracy(label_cipher, label_true[0])
     accuracy_cipher_check := CheckAccuracy_3(label_true[0], label_plain, label_cipher)
 
 	fmt.Println(accuracy_plain, accuracy_cipher, accuracy_cipher_check)

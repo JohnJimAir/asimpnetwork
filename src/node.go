@@ -15,12 +15,12 @@ type Node struct {
 	Input []*rlwe.Ciphertext
 }
 
-func (n Node) Forward(interval float64, degree int, eval *hefloat.Evaluator, params hefloat.Parameters) (output *rlwe.Ciphertext) {
+func (n Node) Forward(interval []float64, degree int, eval *hefloat.Evaluator, params hefloat.Parameters) (output *rlwe.Ciphertext) {
 	
 	var err error
 	output = Innerproduct(n.Coefficients_mult, n.Coefficient_add, n.Input, eval)
-
-	poly := hefloat.NewPolynomial(GetChebyshevPoly(interval, degree, n.Activation))
+	
+	poly := hefloat.NewPolynomial(GetChebyshevPoly(interval[0], interval[1], degree, n.Activation))
 	polyEval := hefloat.NewPolynomialEvaluator(params, eval)
 
 	scalar, constant := poly.ChangeOfBasis()
@@ -72,7 +72,7 @@ func Innerproduct(coefficients_mult []float64, coefficient_add float64, input []
 	return output
 }
 
-func GetChebyshevPoly(K float64, degree int, f64 func(x float64) (y float64)) bignum.Polynomial {
+func GetChebyshevPoly(K_left, K_right float64, degree int, f64 func(x float64) (y float64)) bignum.Polynomial {
 
 	FBig := func(x *big.Float) (y *big.Float) {
 		xF64, _ := x.Float64()
@@ -82,8 +82,8 @@ func GetChebyshevPoly(K float64, degree int, f64 func(x float64) (y float64)) bi
 	var prec uint = 128
 
 	interval := bignum.Interval{
-		A:     *bignum.NewFloat(-K, prec),
-		B:     *bignum.NewFloat(K, prec),
+		A:     *bignum.NewFloat(K_left, prec),
+		B:     *bignum.NewFloat(K_right, prec),
 		Nodes: degree,
 	}
 
